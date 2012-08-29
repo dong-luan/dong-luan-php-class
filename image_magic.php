@@ -231,7 +231,24 @@ class Image_magic {
 	public function insert_text($text, $font_size = 13, $color = 'black', $font = 'arial', $x = 0, $y = 0, $angle = 0, $shadow_color = 'null', $shadow_width = 1) {
 		$font .= ".ttf";
 		$y += $font_size;
-		$array_color = array("red" => imagecolorallocate($this -> image, 0xFF, 0x00, 0x00), "white" => imagecolorallocate($this -> image, 0xFF, 0xFF, 0xFF), "turquoise" => imagecolorallocate($this -> image, 0x00, 0xFF, 0xFF), "light grey" => imagecolorallocate($this -> image, 0xC0, 0xC0, 0xC0), "light blue" => imagecolorallocate($this -> image, 0x00, 0x00, 0xFF), "dark grey" => imagecolorallocate($this -> image, 0x80, 0x80, 0x80), "dark blue" => imagecolorallocate($this -> image, 0x00, 0x00, 0xA0), "black" => imagecolorallocate($this -> image, 0x00, 0x00, 0x00), "light purple" => imagecolorallocate($this -> image, 0xFF, 0x00, 0x80), "orange" => imagecolorallocate($this -> image, 0xFF, 0x80, 0x40), "dark purple" => imagecolorallocate($this -> image, 0x80, 0x00, 0x80), "brown" => imagecolorallocate($this -> image, 0x80, 0x40, 0x00), "yellow" => imagecolorallocate($this -> image, 0xFF, 0xFF, 0x00), "burgundy" => imagecolorallocate($this -> image, 0x80, 0x00, 0x00), "pastel green" => imagecolorallocate($this -> image, 0x00, 0xFF, 0x00), "forest green" => imagecolorallocate($this -> image, 0x80, 0x80, 0x00), "pink" => imagecolorallocate($this -> image, 0xFF, 0x00, 0xFF), "grass green" => imagecolorallocate($this -> image, 0x40, 0x80, 0x80));
+		$array_color = array("red" => imagecolorallocate($this -> image, 0xFF, 0x00, 0x00), 
+		                     "white" => imagecolorallocate($this -> image, 0xFF, 0xFF, 0xFF), 
+		                     "turquoise" => imagecolorallocate($this -> image, 0x00, 0xFF, 0xFF), 
+		                     "light grey" => imagecolorallocate($this -> image, 0xC0, 0xC0, 0xC0),
+		                     "light blue" => imagecolorallocate($this -> image, 0x00, 0x00, 0xFF), 
+		                     "dark grey" => imagecolorallocate($this -> image, 0x80, 0x80, 0x80),
+		                     "dark blue" => imagecolorallocate($this -> image, 0x00, 0x00, 0xA0),
+		                     "black" => imagecolorallocate($this -> image, 0x00, 0x00, 0x00),
+		                     "light purple" => imagecolorallocate($this -> image, 0xFF, 0x00, 0x80), 
+		                     "orange" => imagecolorallocate($this -> image, 0xFF, 0x80, 0x40), 
+		                     "dark purple" => imagecolorallocate($this -> image, 0x80, 0x00, 0x80),
+		                     "brown" => imagecolorallocate($this -> image, 0x80, 0x40, 0x00), 
+		                     "yellow" => imagecolorallocate($this -> image, 0xFF, 0xFF, 0x00), 
+		                     "burgundy" => imagecolorallocate($this -> image, 0x80, 0x00, 0x00),
+		                     "pastel green" => imagecolorallocate($this -> image, 0x00, 0xFF, 0x00), 
+		                     "forest green" => imagecolorallocate($this -> image, 0x80, 0x80, 0x00),
+		                     "pink" => imagecolorallocate($this -> image, 0xFF, 0x00, 0xFF), 
+		                     "grass green" => imagecolorallocate($this -> image, 0x40, 0x80, 0x80));
 		if ($shadow_color != 'null') {
 			imagefttext($this -> image, $font_size, $angle, $x + $shadow_width, $y + $shadow_width, $array_color[$shadow_color], $font, $text);
 		}
@@ -239,6 +256,30 @@ class Image_magic {
 		imagefttext($this -> image, $font_size, $angle, $x, $y, $array_color[$color], $font, $text);
 
 	}
-
+	
+	//function add string
+	public function add_text(){
+	  $text_color = imagecolorallocate($this->image, 0, 0, 0);
+	  $font=imageloadfont('arial.gdf');
+	  imagestring($this->image, $font, 15,20,  'FAP', $text_color);
+	}
+	
+	// function test insert text => 'right bottom'
+	public function test_insert_text($text,$font_size)
+	{
+		$font ="arial.ttf"; 
+		
+		// load font chu (chi dung cho font .gdf)
+		$f = imageloadfont($font);
+        $i = strlen($text); // dem do dai cua chuoi
+		$h = imagefontheight($f); // tinh chieu cao cua chuoi
+		$w = $i * imagefontwidth($f) ; // tinh do rong cua chuoi = do dai * do rong cua font
+		
+		$x= $this->image_width - $w ; // lay toa do x = chieu rong cua anh - do dai cua chu
+		$y= $this->image_height - $h;  // lay toa do y = chieu cao cua anh - do cao cua chu
+		
+		$red = imagecolorallocate ( $this->image, 0xFF, 0x00, 0x00 ); // mau do
+	    imagefttext($this->image, $font_size, 0, $x, $y, $red, $font, $text);		
+     }
 }
 ?>
