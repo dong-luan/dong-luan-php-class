@@ -11,6 +11,7 @@ $img->insert_text('Nguyen Trang Dong',30,'red','28 Days Later',10,10,0,'black',3
 $img -> show();
 //$img -> save('ka1.jpg');
 
+$img->test_insert_text("nguyen trang dong");
 
 
 ?>
