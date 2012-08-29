@@ -257,7 +257,7 @@ class Image_magic {
 		$red = imagecolorallocate ( $this->image, 0xFF, 0x00, 0x00 ); // mau do
 						
 		
-		imagefttext($this->image, $font_size, 0, $x, $y, $red, $font, $text);		
+		imagefttext($this->image, 13, 0, $x, $y, $red, $font, $text);		
 			
 	}
 
