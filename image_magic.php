@@ -121,6 +121,26 @@ class Image_magic {
 		imagecopymerge($this -> image, $watermark_img, $dest_x, $dest_y, 0, 0, $watermark_width, $watermark_height, 50);
 	}
 
+	public function add_watermark_exact_position($pos_x, $pos_y) {
+      
+	}
+
+	public function add_watermark_top_left() {
+
+	}
+
+	public function add_watermark_bottom_left() {
+
+	}
+
+	public function add_watermark_top_right() {
+
+	}
+
+	public function add_watermark_bottom_right() {
+
+	}
+
 	//Hiển thị ảnh ra
 	public function show() {
 		switch ($this->get_extension()) {
@@ -206,37 +226,18 @@ class Image_magic {
 		$new_image_height = $new_image_width * $ratio;
 		return $new_image_height;
 	}
-	
+
 	// function insert text on image
-	public function insert_text($text, $font_size=13, $color='black', $font='arial', $x = 0, $y = 0, $angle=0, $shadow_color='null', $shadow_width=1)
-	{
-		$font .=".ttf";
-		$y += $font_size;   
-		$array_color = array("red" => imagecolorallocate ( $this->image, 0xFF, 0x00, 0x00 ) ,
-							 "white" => imagecolorallocate ( $this->image , 0xFF, 0xFF, 0xFF ) ,
-							 "turquoise" => imagecolorallocate ( $this->image , 0x00, 0xFF, 0xFF ) ,
-							 "light grey" => imagecolorallocate ( $this->image , 0xC0, 0xC0, 0xC0 ) ,
-							 "light blue" => imagecolorallocate ( $this->image , 0x00, 0x00, 0xFF ) ,
-							 "dark grey" => imagecolorallocate ( $this->image , 0x80, 0x80, 0x80 ) ,
-							 "dark blue" => imagecolorallocate ( $this->image , 0x00, 0x00, 0xA0 ) ,
-							 "black" => imagecolorallocate ( $this->image , 0x00, 0x00, 0x00 ) ,
-							 "light purple" => imagecolorallocate ( $this->image , 0xFF, 0x00, 0x80 ) ,
-							 "orange" => imagecolorallocate ( $this->image , 0xFF, 0x80, 0x40 ) ,
-							 "dark purple" => imagecolorallocate ( $this->image , 0x80, 0x00, 0x80 ) ,
-							 "brown" => imagecolorallocate ( $this->image , 0x80, 0x40, 0x00 ) ,
-							 "yellow" => imagecolorallocate ( $this->image , 0xFF, 0xFF, 0x00 ) ,
-							 "burgundy" => imagecolorallocate ( $this->image , 0x80, 0x00, 0x00 ) ,
-							 "pastel green" => imagecolorallocate ( $this->image , 0x00, 0xFF, 0x00 ) ,
-							 "forest green" => imagecolorallocate ( $this->image , 0x80, 0x80, 0x00 ) ,
-							 "pink" => imagecolorallocate ( $this->image , 0xFF, 0x00, 0xFF ) ,
-							 "grass green" => imagecolorallocate ( $this->image , 0x40, 0x80, 0x80 )
-							);
-		if($shadow_color!='null'){ 
-			imagefttext($this->image, $font_size, $angle, $x+$shadow_width, $y+$shadow_width, $array_color[$shadow_color], $font, $text);
-		}	 				
-		
-		imagefttext($this->image, $font_size, $angle, $x, $y, $array_color[$color], $font, $text);		
-					
+	public function insert_text($text, $font_size = 13, $color = 'black', $font = 'arial', $x = 0, $y = 0, $angle = 0, $shadow_color = 'null', $shadow_width = 1) {
+		$font .= ".ttf";
+		$y += $font_size;
+		$array_color = array("red" => imagecolorallocate($this -> image, 0xFF, 0x00, 0x00), "white" => imagecolorallocate($this -> image, 0xFF, 0xFF, 0xFF), "turquoise" => imagecolorallocate($this -> image, 0x00, 0xFF, 0xFF), "light grey" => imagecolorallocate($this -> image, 0xC0, 0xC0, 0xC0), "light blue" => imagecolorallocate($this -> image, 0x00, 0x00, 0xFF), "dark grey" => imagecolorallocate($this -> image, 0x80, 0x80, 0x80), "dark blue" => imagecolorallocate($this -> image, 0x00, 0x00, 0xA0), "black" => imagecolorallocate($this -> image, 0x00, 0x00, 0x00), "light purple" => imagecolorallocate($this -> image, 0xFF, 0x00, 0x80), "orange" => imagecolorallocate($this -> image, 0xFF, 0x80, 0x40), "dark purple" => imagecolorallocate($this -> image, 0x80, 0x00, 0x80), "brown" => imagecolorallocate($this -> image, 0x80, 0x40, 0x00), "yellow" => imagecolorallocate($this -> image, 0xFF, 0xFF, 0x00), "burgundy" => imagecolorallocate($this -> image, 0x80, 0x00, 0x00), "pastel green" => imagecolorallocate($this -> image, 0x00, 0xFF, 0x00), "forest green" => imagecolorallocate($this -> image, 0x80, 0x80, 0x00), "pink" => imagecolorallocate($this -> image, 0xFF, 0x00, 0xFF), "grass green" => imagecolorallocate($this -> image, 0x40, 0x80, 0x80));
+		if ($shadow_color != 'null') {
+			imagefttext($this -> image, $font_size, $angle, $x + $shadow_width, $y + $shadow_width, $array_color[$shadow_color], $font, $text);
+		}
+
+		imagefttext($this -> image, $font_size, $angle, $x, $y, $array_color[$color], $font, $text);
+
 	}
 
 }
