@@ -213,40 +213,46 @@ class Image_magic {
 		$font .=".ttf";
 		$y += $font_size;   
 		
-		if(substr($text, 0,1)=="#"){
-			
-			$cRed = 0x00 * '0x'.substr($text, 1,2);
-			$cYellow = 0x00 * "0x".substr($text, 3,2);
-			$cBlue = 0x00 * "0x".substr($text, 5,2);	
-			 echo $cBlue;
-			$color_text = 	imagecolorallocate ( $this->image, $cRed, $cYellow, $cBlue );	
-		}else{
-			
-			$array_color = array("red" => imagecolorallocate ( $this->image, 0xFF, 0x00, 0x00 ) ,
+		$array_color = array("red" => imagecolorallocate ( $this->image, 0xFF, 0x00, 0x00 ) ,
 							 "white" => imagecolorallocate ( $this->image , 0xFF, 0xFF, 0xFF ) ,
 							 "turquoise" => imagecolorallocate ( $this->image , 0x00, 0xFF, 0xFF ) ,
+							 "grey" => imagecolorallocate ( $this->image , 0xC0, 0xC0, 0xC0 ) ,
 							 "light grey" => imagecolorallocate ( $this->image , 0xC0, 0xC0, 0xC0 ) ,
-							 "light blue" => imagecolorallocate ( $this->image , 0x00, 0x00, 0xFF ) ,
 							 "dark grey" => imagecolorallocate ( $this->image , 0x80, 0x80, 0x80 ) ,
+							 "blue" => imagecolorallocate ( $this->image , 0x00, 0x00, 0xFF ) ,
+							 "light blue" => imagecolorallocate ( $this->image , 0x00, 0x00, 0xFF ) ,
 							 "dark blue" => imagecolorallocate ( $this->image , 0x00, 0x00, 0xA0 ) ,
 							 "black" => imagecolorallocate ( $this->image , 0x00, 0x00, 0x00 ) ,
+							 "purple" => imagecolorallocate ( $this->image , 0xFF, 0x00, 0x80 ) ,
 							 "light purple" => imagecolorallocate ( $this->image , 0xFF, 0x00, 0x80 ) ,
-							 "orange" => imagecolorallocate ( $this->image , 0xFF, 0x80, 0x40 ) ,
 							 "dark purple" => imagecolorallocate ( $this->image , 0x80, 0x00, 0x80 ) ,
+							 "orange" => imagecolorallocate ( $this->image , 0xFF, 0x80, 0x40 ) , 
 							 "brown" => imagecolorallocate ( $this->image , 0x80, 0x40, 0x00 ) ,
 							 "yellow" => imagecolorallocate ( $this->image , 0xFF, 0xFF, 0x00 ) ,
 							 "burgundy" => imagecolorallocate ( $this->image , 0x80, 0x00, 0x00 ) ,
-							 "pastel green" => imagecolorallocate ( $this->image , 0x00, 0xFF, 0x00 ) ,
+							 "green" => imagecolorallocate ( $this->image , 0x00, 0xFF, 0x00 ) ,
+							 "pastel green"=> imagecolorallocate ( $this->image , 0x00, 0xFF, 0x00 ) ,
 							 "forest green" => imagecolorallocate ( $this->image , 0x80, 0x80, 0x00 ) ,
-							 "pink" => imagecolorallocate ( $this->image , 0xFF, 0x00, 0xFF ) ,
-							 "grass green" => imagecolorallocate ( $this->image , 0x40, 0x80, 0x80 )
+							 "grass green" => imagecolorallocate ( $this->image , 0x40, 0x80, 0x80 ), 
+							 "pink" => imagecolorallocate ( $this->image , 0xFF, 0x00, 0xFF )
 							);
+		// check color					
+		if(substr($color, 0,1)=="#"){
+			$color_text = 	imagecolorallocate ( $this->image, '0x'.substr($color, 1,2), "0x".substr($color, 3,2), "0x".substr($color, 5,2) );
+		}else{
 			$color_text = $array_color[$color];
 		}
 		
-		
-		if($shadow_color!='null'){ 
-			imagefttext($this->image, $font_size, $angle, $x+$shadow_width, $y+$shadow_width, $array_color[$shadow_color], $font, $text);
+		// check select shadow
+		if($shadow_color!='null'){
+			// check color
+			if(substr($shadow_color, 0,1)=="#"){
+				$color_shadow_text = imagecolorallocate ( $this->image, '0x'.substr($shadow_color, 1,2), "0x".substr($shadow_color, 3,2), "0x".substr($shadow_color, 5,2) );
+			}else{
+				$color_shadow_text = $array_color[$shadow_color];
+			}
+			 
+			imagefttext($this->image, $font_size, $angle, $x+$shadow_width, $y+$shadow_width, $color_shadow_text, $font, $text);
 		}	 				
 		
 		imagefttext($this->image, $font_size, $angle, $x, $y, $color_text, $font, $text);		
