@@ -212,7 +212,17 @@ class Image_magic {
 	{
 		$font .=".ttf";
 		$y += $font_size;   
-		$array_color = array("red" => imagecolorallocate ( $this->image, 0xFF, 0x00, 0x00 ) ,
+		
+		if(substr($text, 0,1)=="#"){
+			
+			$cRed = 0x00 * '0x'.substr($text, 1,2);
+			$cYellow = 0x00 * "0x".substr($text, 3,2);
+			$cBlue = 0x00 * "0x".substr($text, 5,2);	
+			 echo $cBlue;
+			$color_text = 	imagecolorallocate ( $this->image, $cRed, $cYellow, $cBlue );	
+		}else{
+			
+			$array_color = array("red" => imagecolorallocate ( $this->image, 0xFF, 0x00, 0x00 ) ,
 							 "white" => imagecolorallocate ( $this->image , 0xFF, 0xFF, 0xFF ) ,
 							 "turquoise" => imagecolorallocate ( $this->image , 0x00, 0xFF, 0xFF ) ,
 							 "light grey" => imagecolorallocate ( $this->image , 0xC0, 0xC0, 0xC0 ) ,
@@ -231,11 +241,15 @@ class Image_magic {
 							 "pink" => imagecolorallocate ( $this->image , 0xFF, 0x00, 0xFF ) ,
 							 "grass green" => imagecolorallocate ( $this->image , 0x40, 0x80, 0x80 )
 							);
+			$color_text = $array_color[$color];
+		}
+		
+		
 		if($shadow_color!='null'){ 
 			imagefttext($this->image, $font_size, $angle, $x+$shadow_width, $y+$shadow_width, $array_color[$shadow_color], $font, $text);
 		}	 				
 		
-		imagefttext($this->image, $font_size, $angle, $x, $y, $array_color[$color], $font, $text);		
+		imagefttext($this->image, $font_size, $angle, $x, $y, $color_text, $font, $text);		
 					
 	}
 	
@@ -256,8 +270,8 @@ class Image_magic {
 		
 		$red = imagecolorallocate ( $this->image, 0xFF, 0x00, 0x00 ); // mau do
 						
-		
-		imagefttext($this->image, $font_size, 0, $x, $y, $red, $font, $text);		
+		imagestring($this->image, 5, 0, 0, 'Hello world!', $red);
+		//imagefttext(, , 0, $x, $y, $red, $font, $text);		
 			
 	}
 
