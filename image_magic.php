@@ -211,7 +211,31 @@ class Image_magic {
 	public function insert_text($text, $font_size=13, $color='black', $font='arial', $x = 0, $y = 0, $angle=0, $shadow_color='null', $shadow_width=1)
 	{
 		$font .=".ttf";
-		$y += $font_size;   
+		  
+		
+		if (!is_numeric($x)) {
+			$bbox = imagettfbbox($font_size, 0, $font, $text);
+			if($x == 'left'){
+				$x = 5; // left
+			}elseif($x == 'center'){
+				$x = $bbox[0] + (imagesx($this->image) / 2) - ($bbox[4] / 2) ; // center
+			}elseif($x == 'right'){
+				$x =  imagesx($this->image) - ($bbox[2]) + ($bbox[5]) + 10; // right
+			}
+		}
+		
+		if (!is_numeric($y)) {
+			$bbox = imagettfbbox($font_size, 0, $font, $text);
+			if($y == 'top'){
+				$y = -$bbox[7]*2 - $font_size + 5; // top
+			}elseif($y == 'middle'){
+				$y = $bbox[1] + (imagesy($this->image) / 2) - ($bbox[5] / 2) - $font_size/2; // middle
+			}elseif($y == 'bottom'){
+				$y = imagesy($this->image) - 15 ; // bottom
+			}
+		}else{
+			$y += $font_size; 
+		}
 		
 		$array_color = array("red" => imagecolorallocate ( $this->image, 0xFF, 0x00, 0x00 ) ,
 							 "white" => imagecolorallocate ( $this->image , 0xFF, 0xFF, 0xFF ) ,
@@ -254,32 +278,12 @@ class Image_magic {
 			 
 			imagefttext($this->image, $font_size, $angle, $x+$shadow_width, $y+$shadow_width, $color_shadow_text, $font, $text);
 		}	 				
-		
+		$text.wordwrap($text,$this->image_width,'\n');
+		 
 		imagefttext($this->image, $font_size, $angle, $x, $y, $color_text, $font, $text);		
 					
 	}
 	
-	// function test insert text => 'right bottom'
-	public function test_insert_text($text,$font_size)
-	{
-		$font ="arial.ttf"; 
-		
-		// load font chu (chi dung cho font .gdf)
-		$f = imageloadfont('arial.gdf');
- 
-		$i = strlen($text); // dem do dai cua chuoi
-		$h = imagefontheight($f); // tinh chieu cao cua chuoi
-		$w = $i * imagefontwidth($f) ; // tinh do rong cua chuoi = do dai * do rong cua font
-		
-		$x= $this->image_width - $w ; // lay toa do x = chieu rong cua anh - do dai cua chu
-		$y= $this->image_height - $h;  // lay toa do y = chieu cao cua anh - do cao cua chu
-		
-		$red = imagecolorallocate ( $this->image, 0xFF, 0x00, 0x00 ); // mau do
-						
-		imagestring($this->image, 5, 0, 0, 'Hello world!', $red);
-		//imagefttext(, , 0, $x, $y, $red, $font, $text);		
-			
-	}
-
+	  
 }
 ?>
