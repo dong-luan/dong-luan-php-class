@@ -11,8 +11,8 @@ $img = new Image_magic("demo.jpg");
 
 //$img -> save('ka1.jpg');
 
-$img->test_insert_text("nguyen trang dong");
+$img->test_insert_text("lay tam cai anh hot girl ;))",30);
 
-//$img -> show();
+$img -> show();
 
 ?>

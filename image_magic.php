@@ -240,9 +240,9 @@ class Image_magic {
 	}
 	
 	// function test insert text => 'right bottom'
-	public function test_insert_text($text)
+	public function test_insert_text($text,$font_size)
 	{
-		$font .="arial.ttf"; 
+		$font ="arial.ttf"; 
 		
 		// load font chu (chi dung cho font .gdf)
 		$f = imageloadfont('arial.gdf');
@@ -257,7 +257,7 @@ class Image_magic {
 		$red = imagecolorallocate ( $this->image, 0xFF, 0x00, 0x00 ); // mau do
 						
 		
-		imagefttext($this->image, 13, 0, $x, $y, $red, $font, $text);		
+		imagefttext($this->image, $font_size, 0, $x, $y, $red, $font, $text);		
 			
 	}
 
