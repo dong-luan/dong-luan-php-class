@@ -1,12 +1,4 @@
 <?php
-
- //$string="xin chao cac bo tre";
- //$encrypt=base64_encode($string);
- //echo $string;
- //echo $encrypt;
- //echo base64_decode($encrypt);
-
-
 include ('image_magic.php');
 $img = new Image_magic("demo.jpg");
 //$img -> rotation(45);
@@ -19,7 +11,8 @@ $img = new Image_magic("demo.jpg");
 
 //$img -> save('ka1.jpg');
 
-//$img->test_insert_text("lay tam cai anh hot girl",30);
-$img->add_text();
+$img->test_insert_text("lay tam cai anh hot girl ;))",30);
+
 $img -> show();
+
 ?>
