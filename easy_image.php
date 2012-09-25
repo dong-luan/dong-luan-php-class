@@ -30,7 +30,7 @@ class easy_image {
 	public function resize($new_width, $new_height) {
 		$this -> image_width = imagesx($this -> image);
 		$this -> image_height = imagesy($this -> image);
-		
+
 		if (is_numeric($new_width) && is_string($new_height) && $new_height == "auto") {
 			$new_height = $this -> get_dynamic_height($new_width);
 		}
@@ -44,38 +44,35 @@ class easy_image {
 			imagecopyresampled($this -> tmp_image, $this -> image, 0, 0, 0, 0, $new_width, $new_height, $this -> image_width, $this -> image_height);
 			$this -> image = $this -> tmp_image;
 		}
-	}    //crop images
+	}
+	//crop images
 	public function crop() {
-      $num_of_arguments=func_num_args();
-	  switch ($num_of_arguments) {
-		  case '2':
-			  $arguments=func_get_args();
-			  $new_width=$arguments[0];
-			  $new_height=$arguments[1];
-			  if(is_numeric($new_width) && $new_width>0 
-			     && is_numeric($new_height) && $new_height>0){
-			    $this->crop_center($new_width, $new_height);
-			  }
-			  break;
-			  
-		  case '4':
-			  $arguments=func_get_args();
-			  $src_x=$arguments[0];
-			  $src_y=$arguments[1];
-			  $new_width=$arguments[2];
-			  $new_height=$arguments[3];
-			  if(is_numeric($new_width) && $new_width>0 
-			     && is_numeric($new_height) && $new_height>0 
-				 && is_numeric($src_x) && $src_x>0
-				 && is_numeric($src_y) && $src_y>0){
-				   $this->crop_exact($src_x, $src_y, $new_width, $new_height);
-			  }
-		  default:
-			  break;
-	  }
+		$num_of_arguments = func_num_args();
+		switch ($num_of_arguments) {
+			case '2' :
+				$arguments = func_get_args();
+				$new_width = $arguments[0];
+				$new_height = $arguments[1];
+				if (is_numeric($new_width) && $new_width > 0 && is_numeric($new_height) && $new_height > 0) {
+					$this -> crop_center($new_width, $new_height);
+				}
+				break;
+
+			case '4' :
+				$arguments = func_get_args();
+				$src_x = $arguments[0];
+				$src_y = $arguments[1];
+				$new_width = $arguments[2];
+				$new_height = $arguments[3];
+				if (is_numeric($new_width) && $new_width > 0 && is_numeric($new_height) && $new_height > 0 && is_numeric($src_x) && $src_x > 0 && is_numeric($src_y) && $src_y > 0) {
+					$this -> crop_exact($src_x, $src_y, $new_width, $new_height);
+				}
+			default :
+				break;
+		}
 	}
 
-    //add watermark
+	//add watermark
 	public function add_watermark() {
 		$num_of_agruments = func_num_args();
 		switch ($num_of_agruments) {
@@ -252,25 +249,29 @@ class easy_image {
 		}
 		imagedestroy($this -> image);
 	}
-
-	// function insert text on image
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// function insert text to image
 	public function add_text($text, $font_size = 13, $color = 'black', $font = 'arial', $x = 0, $y = 0, $angle = 0, $shadow_color = 'null', $shadow_width = 1) {
 		$font .= ".ttf";
-
-		if (!is_numeric($x)) {
-			$bbox = imagettfbbox($font_size, 0, $font, $text);
-			if ($x == 'left') {
-				$x = 5;
-				// left
-			} elseif ($x == 'center') {
-				$x = $bbox[0] + (imagesx($this -> image) / 2) - ($bbox[4] / 2);
-				// center
-			} elseif ($x == 'right') {
-				$x = imagesx($this -> image) - ($bbox[2]) + ($bbox[5]) + 10;
-				// right
-			}
+		$x = $this->get_x($x, $font, $font_size, $text);
+		$y = $this->get_y($y, $font, $font_size, $text); 
+		$color_text = $this->get_color($color);
+		 
+		// check select shadow
+		if ($shadow_color != 'null') { 
+			$color_shadow_text = $this->get_color($shadow_color);
+			imagefttext($this -> image, $font_size, $angle, $x + $shadow_width, $y + $shadow_width, $color_shadow_text, $font, $text);
 		}
+			
+		$text . wordwrap($text, $this -> image_width, '\n');
 
+		imagefttext($this -> image, $font_size, $angle, $x, $y, $color_text, $font, $text);
+	}
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// function get y
+	public function get_y($y, $font, $font_size, $text){
 		if (!is_numeric($y)) {
 			$bbox = imagettfbbox($font_size, 0, $font, $text);
 			if ($y == 'top') {
@@ -286,59 +287,69 @@ class easy_image {
 		} else {
 			$y += $font_size;
 		}
-
-		$array_color = array("red" => imagecolorallocate($this -> image, 0xFF, 0x00, 0x00), "white" => imagecolorallocate($this -> image, 0xFF, 0xFF, 0xFF), "turquoise" => imagecolorallocate($this -> image, 0x00, 0xFF, 0xFF), "grey" => imagecolorallocate($this -> image, 0xC0, 0xC0, 0xC0), "light grey" => imagecolorallocate($this -> image, 0xC0, 0xC0, 0xC0), "dark grey" => imagecolorallocate($this -> image, 0x80, 0x80, 0x80), "blue" => imagecolorallocate($this -> image, 0x00, 0x00, 0xFF), "light blue" => imagecolorallocate($this -> image, 0x00, 0x00, 0xFF), "dark blue" => imagecolorallocate($this -> image, 0x00, 0x00, 0xA0), "black" => imagecolorallocate($this -> image, 0x00, 0x00, 0x00), "purple" => imagecolorallocate($this -> image, 0xFF, 0x00, 0x80), "light purple" => imagecolorallocate($this -> image, 0xFF, 0x00, 0x80), "dark purple" => imagecolorallocate($this -> image, 0x80, 0x00, 0x80), "orange" => imagecolorallocate($this -> image, 0xFF, 0x80, 0x40), "brown" => imagecolorallocate($this -> image, 0x80, 0x40, 0x00), "yellow" => imagecolorallocate($this -> image, 0xFF, 0xFF, 0x00), "burgundy" => imagecolorallocate($this -> image, 0x80, 0x00, 0x00), "green" => imagecolorallocate($this -> image, 0x00, 0xFF, 0x00), "pastel green" => imagecolorallocate($this -> image, 0x00, 0xFF, 0x00), "forest green" => imagecolorallocate($this -> image, 0x80, 0x80, 0x00), "grass green" => imagecolorallocate($this -> image, 0x40, 0x80, 0x80), "pink" => imagecolorallocate($this -> image, 0xFF, 0x00, 0xFF));
-		// check color
-		if (substr($color, 0, 1) == "#") {
-			$color_text = imagecolorallocate($this -> image, '0x' . substr($color, 1, 2), "0x" . substr($color, 3, 2), "0x" . substr($color, 5, 2));
-		} else {
-			$color_text = $array_color[$color];
-		}
-
-		// check select shadow
-		if ($shadow_color != 'null') {
-			// check color
-			if (substr($shadow_color, 0, 1) == "#") {
-				$color_shadow_text = imagecolorallocate($this -> image, '0x' . substr($shadow_color, 1, 2), "0x" . substr($shadow_color, 3, 2), "0x" . substr($shadow_color, 5, 2));
-			} else {
-				$color_shadow_text = $array_color[$shadow_color];
+		return $y;
+	}
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// function get x
+	public function get_x($x, $font, $font_size, $text){
+		if (!is_numeric($x)) {
+			$bbox = imagettfbbox($font_size, 0, $font, $text);
+			if ($x == 'left') {
+				$x = 5;
+				// left
+			} elseif ($x == 'center') {
+				$x = $bbox[0] + (imagesx($this -> image) / 2) - ($bbox[4] / 2);
+				// center
+			} elseif ($x == 'right') {
+				$x = imagesx($this -> image) - ($bbox[2]) + ($bbox[5]) + 10;
+				// right
 			}
-
-			imagefttext($this -> image, $font_size, $angle, $x + $shadow_width, $y + $shadow_width, $color_shadow_text, $font, $text);
 		}
-		$text . wordwrap($text, $this -> image_width, '\n');
+		return $x;
+	}
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// function get color
+	public function get_color($color_code) {
+		// check color
+		if (substr($color_code, 0, 1) == "#") {
+			$color = imagecolorallocate($this -> image, '0x' . substr($color_code, 1, 2), "0x" . substr($color_code, 3, 2), "0x" . substr($color_code, 5, 2));
+		} else {
+			$array_color = array("red" => imagecolorallocate($this -> image, 0xFF, 0x00, 0x00), "white" => imagecolorallocate($this -> image, 0xFF, 0xFF, 0xFF), "turquoise" => imagecolorallocate($this -> image, 0x00, 0xFF, 0xFF), "grey" => imagecolorallocate($this -> image, 0xC0, 0xC0, 0xC0), "light grey" => imagecolorallocate($this -> image, 0xC0, 0xC0, 0xC0), "dark grey" => imagecolorallocate($this -> image, 0x80, 0x80, 0x80), "blue" => imagecolorallocate($this -> image, 0x00, 0x00, 0xFF), "light blue" => imagecolorallocate($this -> image, 0x00, 0x00, 0xFF), "dark blue" => imagecolorallocate($this -> image, 0x00, 0x00, 0xA0), "black" => imagecolorallocate($this -> image, 0x00, 0x00, 0x00), "purple" => imagecolorallocate($this -> image, 0xFF, 0x00, 0x80), "light purple" => imagecolorallocate($this -> image, 0xFF, 0x00, 0x80), "dark purple" => imagecolorallocate($this -> image, 0x80, 0x00, 0x80), "orange" => imagecolorallocate($this -> image, 0xFF, 0x80, 0x40), "brown" => imagecolorallocate($this -> image, 0x80, 0x40, 0x00), "yellow" => imagecolorallocate($this -> image, 0xFF, 0xFF, 0x00), "burgundy" => imagecolorallocate($this -> image, 0x80, 0x00, 0x00), "green" => imagecolorallocate($this -> image, 0x00, 0xFF, 0x00), "pastel green" => imagecolorallocate($this -> image, 0x00, 0xFF, 0x00), "forest green" => imagecolorallocate($this -> image, 0x80, 0x80, 0x00), "grass green" => imagecolorallocate($this -> image, 0x40, 0x80, 0x80), "pink" => imagecolorallocate($this -> image, 0xFF, 0x00, 0xFF));
+			$color = $array_color[$color_code];
+		}
+		return $color;
+	}
 
-		imagefttext($this -> image, $font_size, $angle, $x, $y, $color_text, $font, $text);
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	public function grayscale() {
+		imagefilter($this -> image, IMG_FILTER_GRAYSCALE);
 	}
-    
-	public function grayscale(){
-	   imagefilter($this->image, IMG_FILTER_GRAYSCALE);	
+
+	public function emboss() {
+		imagefilter($this -> image, IMG_FILTER_EMBOSS);
 	}
-	
-	public function emboss(){
-	   imagefilter($this->image, IMG_FILTER_EMBOSS);
+
+	public function negative() {
+		imagefilter($this -> image, IMG_FILTER_NEGATE);
 	}
-	
-	public function negative(){
-	   imagefilter($this->image, IMG_FILTER_NEGATE);	
+
+	public function blur() {
+		imagefilter($this -> image, IMG_FILTER_GAUSSIAN_BLUR);
 	}
-	
-	public function blur(){
-	   imagefilter($this->image, IMG_FILTER_GAUSSIAN_BLUR);	
+
+	public function smooth($arg) {
+		imagefilter($this -> image, IMG_FILTER_SMOOTH, $arg);
 	}
-	
-    public function smooth($arg){
-       imagefilter($this->image, IMG_FILTER_SMOOTH, $arg);
-    }
-	
-	public function brightness($arg){
-	   imagefilter($this->image,IMG_FILTER_BRIGHTNESS,$arg);
+
+	public function brightness($arg) {
+		imagefilter($this -> image, IMG_FILTER_BRIGHTNESS, $arg);
 	}
-	
-	public function contrast($arg){
-	   imagefilter($this->image,IMG_FILTER_CONTRAST,$arg);	
+
+	public function contrast($arg) {
+		imagefilter($this -> image, IMG_FILTER_CONTRAST, $arg);
 	}
-	
+
 	//private method
 	private function add_watermark_exact_position($watermark_image, $pos_x, $pos_y) {
 		$watermark_width = imagesx($watermark_image);
@@ -425,9 +436,9 @@ class easy_image {
 		}
 		return $img;
 	}
-    
-	private function crop_exact($src_x, $src_y, $new_width, $new_height){
-	  	$this -> image_width = imagesx($this -> image);
+
+	private function crop_exact($src_x, $src_y, $new_width, $new_height) {
+		$this -> image_width = imagesx($this -> image);
 		$this -> image_height = imagesy($this -> image);
 		$distance_x = $this -> image_width - $src_x;
 		$distance_y = $this -> image_height - $src_y;
@@ -441,28 +452,28 @@ class easy_image {
 			$this -> tmp_image = imagecreatetruecolor($new_width, $new_height);
 			imagecopyresampled($this -> tmp_image, $this -> image, 0, 0, $src_x, $src_y, $new_width, $new_height, $new_width, $new_height);
 			$this -> image = $this -> tmp_image;
-		}	
+		}
 	}
-	
-	private function crop_center($new_width, $new_height){
-	   $src_x=($this->image_width/2)-($new_width/2);
-	   $src_y=($this->image_height/2)-($new_height/2);
-	   $this->crop_exact($src_x, $src_y, $new_width, $new_height);
+
+	private function crop_center($new_width, $new_height) {
+		$src_x = ($this -> image_width / 2) - ($new_width / 2);
+		$src_y = ($this -> image_height / 2) - ($new_height / 2);
+		$this -> crop_exact($src_x, $src_y, $new_width, $new_height);
 	}
-	
-	
+
 	private function caching_headers($file, $timestamp) {
 		// $gmt_mtime = gmdate('r', $timestamp);
 		// header('ETag: "' . md5($timestamp . $file) . '"');
 		// header('Last-Modified: ' . $gmt_mtime);
 		// header('Cache-Control: public');
-// 
+		//
 		// if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) || isset($_SERVER['HTTP_IF_NONE_MATCH'])) {
-			// if ($_SERVER['HTTP_IF_MODIFIED_SINCE'] == $gmt_mtime || str_replace('"', '', stripslashes($_SERVER['HTTP_IF_NONE_MATCH'])) == md5($timestamp . $file)) {
-				// header('HTTP/1.1 304 Not Modified');
-				// exit();
-			// }
+		// if ($_SERVER['HTTP_IF_MODIFIED_SINCE'] == $gmt_mtime || str_replace('"', '', stripslashes($_SERVER['HTTP_IF_NONE_MATCH'])) == md5($timestamp . $file)) {
+		// header('HTTP/1.1 304 Not Modified');
+		// exit();
+		// }
 		// }
 	}
+
 }
 ?>
