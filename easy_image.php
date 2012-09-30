@@ -250,9 +250,8 @@ class easy_image {
 		imagedestroy($this -> image);
 	}
 
-
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+
 	private $text;
 	private $font_size = 13;
 	private $font = "arial";
@@ -262,7 +261,10 @@ class easy_image {
 	private $shadow_color = null;
 	private $shadow_width = 1;
 	private $angle = 0;
-	
+
+	private $margin_x = 0;
+	private $margin_y = 0;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// function insert text to image
 	public function add_text() {
@@ -270,84 +272,160 @@ class easy_image {
 		$agruments = func_get_args();
 		$text = $agruments[0];
 		switch ($num_of_arguments) {
-			case '1':  
+			case '1' :
 				$this -> add_text_normal($text);
 				break;
-			case '2':  
+			case '2' :
 				$font_size = $agruments[1];
 				$this -> add_text_with_font($text, $font_size);
 				break;
-			case '3':  
-				if(is_numeric($agruments[1])){
+			case '3' :
+				if (is_numeric($agruments[1])) {
 					$font_size = $agruments[1];
 					$font = $agruments[2];
 					$this -> add_text_with_font($text, $font_size, $font);
-				}else{
+				} else {
 					$color = $agruments[1];
 					$font_size = $agruments[2];
 					$this -> add_text_with_font_color($text, $color, $font_size);
-				} 
+				}
 				break;
-			case '4':
-					$color = $agruments[1];
-					$font_size = $agruments[2];
-					$font = $agruments[3];
-					$this -> add_text_with_font_color($text, $color, $font_size, $font);
+			case '4' :
+				$color = $agruments[1];
+				$font_size = $agruments[2];
+				$font = $agruments[3];
+				$this -> add_text_with_font_color($text, $color, $font_size, $font);
 				break;
-			case '5':
+			case '5' :
 				$font_size = $agruments[1];
 				$color = $agruments[2];
 				$x = $agruments[3];
 				$y = $agruments[4];
 				$this -> add_text_with_x_y($text, $font_size, $color, $x, $y);
 				break;
-			case '6':
+			case '6' :
 				$x = $agruments[3];
 				$y = $agruments[4];
-				
-				if(!is_numeric($agruments[1])){
+
+				if (!is_numeric($agruments[1])) {
 					$color = $agruments[1];
 					$font_size = $agruments[2];
 					$angle = $agruments[5];
 					$this -> add_text_with_x_y_angle($text, $color, $font_size, $x, $y, $angle);
-				}else{
+				} else {
 					$font_size = $agruments[1];
 					$color = $agruments[2];
 					$font = $agruments[5];
 					$this -> add_text_with_x_y($text, $font_size, $color, $x, $y, $font);
-				} 
+				}
 				break;
-			case '7':
+			case '7' :
+				if (is_numeric($agruments[1])) {
+					$font_size = $agruments[1];
+					$color = $agruments[2];
+					$x = $agruments[3];
+					$margin_x = $agruments[4];
+					$y = $agruments[5];
+					$margin_y = $agruments[6];
+					$this -> add_text_with_x_y_margin($text, $font_size, $color, $x, $margin_x, $y, $margin_y);
+				} else {
+					$color = $agruments[1];
+					$font_size = $agruments[2];
+					$x = $agruments[3];
+					$y = $agruments[4];
+					$angle = $agruments[5];
+					$font = $agruments[6];
+					$this -> add_text_with_x_y_angle($text, $color, $font_size, $x, $y, $angle, $font);
+				}
+				break;
+			case '8' :
+				if (is_numeric($agruments[1])) {
+					$font_size = $agruments[1];
+					$color = $agruments[2];
+					$x = $agruments[3];
+					$margin_x = $agruments[4];
+					$y = $agruments[5];
+					$margin_y = $agruments[6];
+					$font = $agruments[7];
+					$this -> add_text_with_x_y_margin($text, $font_size, $color, $x, $margin_x, $y, $margin_y, $font);
+				} else {
+					if (is_numeric($agruments[6])) {
+
+						$color = $agruments[1];
+						$font_size = $agruments[2];
+						$x = $agruments[3];
+						$margin_x = $agruments[4];
+						$y = $agruments[5];
+						$margin_y = $agruments[6];
+						$angle = $agruments[7];
+						$this -> add_text_with_x_y_angle_margin($text, $color, $font_size, $x, $margin_x, $y, $margin_y, $angle);
+
+					} else {
+
+						$color = $agruments[1];
+						$font_size = $agruments[2];
+						$x = $agruments[3];
+						$y = $agruments[4];
+						$angle = $agruments[5];
+						$shadow_color = $agruments[6];
+						$shadow_width = $agruments[7];
+						$this -> add_text_with_x_y_angle_shadown($text, $color, $font_size, $x, $y, $angle, $shadow_color, $shadow_width);
+					}
+				}
+				break;
+			case '9' :
+				if (is_numeric($agruments[6])) {
+
+					$color = $agruments[1];
+					$font_size = $agruments[2];
+					$x = $agruments[3];
+					$margin_x = $agruments[4];
+					$y = $agruments[5];
+					$margin_y = $agruments[6];
+					$angle = $agruments[7];
+					$font = $agruments[8];
+					$this -> add_text_with_x_y_angle_margin($text, $color, $font_size, $x, $margin_x, $y, $margin_y, $angle, $font);
+
+				} else {
+					$color = $agruments[1];
+					$font_size = $agruments[2];
+					$x = $agruments[3];
+					$y = $agruments[4];
+					$angle = $agruments[5];
+					$shadow_color = $agruments[6];
+					$shadow_width = $agruments[7];
+					$font = $agruments[8];
+					$this -> add_text_with_x_y_angle_shadown($text, $color, $font_size, $x, $y, $angle, $shadow_color, $shadow_width, $font);
+				}
+				break;
+			case '10' :
 				$color = $agruments[1];
 				$font_size = $agruments[2];
 				$x = $agruments[3];
-				$y = $agruments[4];
-				$angle = $agruments[5];
-				$font = $agruments[6];
-				$this -> add_text_with_x_y_angle($text, $color, $font_size, $x, $y, $angle, $font);
+				$margin_x = $agruments[4];
+				$y = $agruments[5];
+				$margin_y = $agruments[6];
+				$angle = $agruments[7];
+				$shadow_color = $agruments[8];
+				$shadow_width = $agruments[9];
+				$this -> add_text_with_x_y_angle_shadown_margin($text, $color, $font_size, $x, $margin_x, $y, $margin_y, $angle, $shadow_color, $shadow_width);
+
 				break;
-			case '8':
+			case '11' :
 				$color = $agruments[1];
 				$font_size = $agruments[2];
 				$x = $agruments[3];
-				$y = $agruments[4];
-				$angle = $agruments[5];
-				$shadow_color = $agruments[6];
-				$shadow_width = $agruments[7];
-				$this -> add_text_with_x_y_angle_shadown($text, $color, $font_size, $x, $y, $angle, $shadow_color, $shadow_width);
+				$margin_x = $agruments[4];
+				$y = $agruments[5];
+				$margin_y = $agruments[6];
+				$angle = $agruments[7];
+				$shadow_color = $agruments[8];
+				$shadow_width = $agruments[9];
+				$font = $agruments[10];
+				$this -> add_text_with_x_y_angle_shadown_margin($text, $color, $font_size, $x, $margin_x, $y, $margin_y, $angle, $shadow_color, $shadow_width, $font);
+
 				break;
-			case '9':
-				$color = $agruments[1];
-				$font_size = $agruments[2];
-				$x = $agruments[3];
-				$y = $agruments[4];
-				$angle = $agruments[5];
-				$shadow_color = $agruments[6];
-				$shadow_width = $agruments[7];
-				$font = $agruments[8];
-				$this -> add_text_with_x_y_angle_shadown($text, $color, $font_size, $x, $y, $angle, $shadow_color, $shadow_width, $font);
-				break;
-			default:
+			default :
 				break;
 		}
 	}
@@ -357,7 +435,7 @@ class easy_image {
 		$this -> color = $this -> get_color($this -> color);
 		$this -> y = $this -> get_y($this -> y);
 		$this -> x = $this -> get_x($this -> x);
-		$this ->font .= ".ttf"; 
+		$this -> font .= ".ttf";
 
 		if ($this -> shadow_color != null) {
 			$this -> shadow_color = $this -> get_color($this -> shadow_color);
@@ -369,12 +447,12 @@ class easy_image {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public function add_text_normal($text) {
-		$this -> text = $text; 
+		$this -> text = $text;
 		$this -> active_add_text();
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
-	public function add_text_with_font($text, $font_size, $font='arial') {
+	public function add_text_with_font($text, $font_size, $font = 'arial') {
 		$this -> text = $text;
 		$this -> font_size = $font_size;
 		$this -> font = $font;
@@ -382,15 +460,16 @@ class easy_image {
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
-	public function add_text_with_font_color($text, $color, $font_size, $font='arial') {
+	public function add_text_with_font_color($text, $color, $font_size, $font = 'arial') {
 		$this -> text = $text;
 		$this -> color = $color;
 		$this -> font_size = $font_size;
 		$this -> font = $font;
 		$this -> active_add_text();
 	}
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
-	public function add_text_with_x_y($text, $font_size, $color, $x, $y, $font='arial'){
+	public function add_text_with_x_y($text, $font_size, $color, $x, $y, $font = 'arial') {
 		$this -> text = $text;
 		$this -> color = $color;
 		$this -> font_size = $font_size;
@@ -399,8 +478,22 @@ class easy_image {
 		$this -> font = $font;
 		$this -> active_add_text();
 	}
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
-	public function add_text_with_x_y_angle($text, $color, $font_size, $x, $y, $angle, $font='arial'){
+	public function add_text_with_x_y_margin($text, $font_size, $color, $x, $margin_x, $y, $margin_y, $font = 'arial') {
+		$this -> text = $text;
+		$this -> color = $color;
+		$this -> font_size = $font_size;
+		$this -> x = $x;
+		$this -> y = $y;
+		$this -> margin_x = $margin_x;
+		$this -> margin_y = $margin_y;
+		$this -> font = $font;
+		$this -> active_add_text();
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public function add_text_with_x_y_angle($text, $color, $font_size, $x, $y, $angle, $font = 'arial') {
 		$this -> text = $text;
 		$this -> color = $color;
 		$this -> font_size = $font_size;
@@ -410,8 +503,23 @@ class easy_image {
 		$this -> font = $font;
 		$this -> active_add_text();
 	}
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
-	public function add_text_with_x_y_angle_shadown($text, $color, $font_size, $x, $y, $angle, $shadow_color, $shadow_width, $font='arial'){
+	public function add_text_with_x_y_angle_margin($text, $color, $font_size, $x, $margin_x, $y, $margin_y, $angle, $font = 'arial') {
+		$this -> text = $text;
+		$this -> color = $color;
+		$this -> font_size = $font_size;
+		$this -> x = $x;
+		$this -> y = $y;
+		$this -> margin_x = $margin_x;
+		$this -> margin_y = $margin_y;
+		$this -> angle = $angle;
+		$this -> font = $font;
+		$this -> active_add_text();
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public function add_text_with_x_y_angle_shadown($text, $color, $font_size, $x, $y, $angle, $shadow_color, $shadow_width, $font = 'arial') {
 		$this -> text = $text;
 		$this -> color = $color;
 		$this -> font_size = $font_size;
@@ -420,23 +528,40 @@ class easy_image {
 		$this -> angle = $angle;
 		$this -> shadow_width = $shadow_width;
 		$this -> shadow_color = $shadow_color;
-		$this -> font = $font;	
+		$this -> font = $font;
 		$this -> active_add_text();
 	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public function add_text_with_x_y_angle_shadown_margin($text, $color, $font_size, $x, $margin_x, $y, $margin_y, $angle, $shadow_color, $shadow_width, $font = 'arial') {
+		$this -> text = $text;
+		$this -> color = $color;
+		$this -> font_size = $font_size;
+		$this -> x = $x;
+		$this -> y = $y;
+		$this -> margin_x = $margin_x;
+		$this -> margin_y = $margin_y;
+		$this -> angle = $angle;
+		$this -> shadow_width = $shadow_width;
+		$this -> shadow_color = $shadow_color;
+		$this -> font = $font;
+		$this -> active_add_text();
+	}
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// function get y
 	public function get_y($y) {
-		$font = $this ->font .".ttf";
+		$font = $this -> font . ".ttf";
 		if (!is_numeric($y)) {
 			$bbox = imagettfbbox($this -> font_size, 0, $font, $this -> text);
 			if ($y == 'top') {
-				$y = -$bbox[7] * 2 - $this -> font_size + 5;
+				$y = -$bbox[7] * 2 - $this -> font_size + $this -> margin_y;
 				// top
 			} elseif ($y == 'middle') {
-				$y = $bbox[1] + (imagesy($this -> image) / 2) - ($bbox[5] / 2) - $this -> font_size / 2;
+				$y = $bbox[1] + (imagesy($this -> image) / 2) - ($bbox[5] / 2) - ($this -> font_size / 2) + $this -> margin_y;
 				// middle
 			} elseif ($y == 'bottom') {
-				$y = imagesy($this -> image) - 15;
+				$y = imagesy($this -> image) - ($this -> font_size / 3) - $this -> margin_y;
 				// bottom
 			}
 		} else {
@@ -448,17 +573,17 @@ class easy_image {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// function get x
 	public function get_x($x) {
-		$font = $this ->font .".ttf";
+		$font = $this -> font . ".ttf";
 		if (!is_numeric($x)) {
 			$bbox = imagettfbbox($this -> font_size, 0, $font, $this -> text);
 			if ($x == 'left') {
-				$x = 5;
+				$x = $this -> margin_x;
 				// left
 			} elseif ($x == 'center') {
-				$x = $bbox[0] + (imagesx($this -> image) / 2) - ($bbox[4] / 2);
+				$x = $bbox[0] + (imagesx($this -> image) / 2) - ($bbox[4] / 2) + $this -> margin_x;
 				// center
 			} elseif ($x == 'right') {
-				$x = imagesx($this -> image) - ($bbox[2]) + ($bbox[5]) + 10;
+				$x = imagesx($this -> image) - ($bbox[2]) + ($bbox[5]) + ($this -> font_size * (4 / 5)) - $this -> margin_x;
 				// right
 			}
 		}
@@ -468,11 +593,11 @@ class easy_image {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// function get color by color code and color name
 	public function get_color($color_code) {
-	
+
 		if (substr($color_code, 0, 1) == "#") {
 			$color = imagecolorallocate($this -> image, '0x' . substr($color_code, 1, 2), "0x" . substr($color_code, 3, 2), "0x" . substr($color_code, 5, 2));
 		} else {
-			$array_color = array("red" => imagecolorallocate($this -> image, 0xFF, 0x00, 0x00), "white" => imagecolorallocate($this -> image, 0xFF, 0xFF, 0xFF), "turquoise" => imagecolorallocate($this -> image, 0x00, 0xFF, 0xFF), "grey" => imagecolorallocate($this -> image, 0xC0, 0xC0, 0xC0), "light grey" => imagecolorallocate($this -> image, 0xC0, 0xC0, 0xC0), "dark grey" => imagecolorallocate($this -> image, 0x80, 0x80, 0x80), "blue" => imagecolorallocate($this -> image, 0x00, 0x00, 0xFF), "light blue" => imagecolorallocate($this -> image, 0x00, 0x00, 0xFF), "dark blue" => imagecolorallocate($this -> image, 0x00, 0x00, 0xA0), "black" => imagecolorallocate($this -> image, 0x00, 0x00, 0x00), "purple" => imagecolorallocate($this -> image, 0xFF, 0x00, 0x80), "light purple" => imagecolorallocate($this -> image, 0xFF, 0x00, 0x80), "dark purple" => imagecolorallocate($this -> image, 0x80, 0x00, 0x80), "orange" => imagecolorallocate($this -> image, 0xFF, 0x80, 0x40), "brown" => imagecolorallocate($this -> image, 0x80, 0x40, 0x00), "yellow" => imagecolorallocate($this -> image, 0xFF, 0xFF, 0x00), "burgundy" => imagecolorallocate($this -> image, 0x80, 0x00, 0x00), "green" => imagecolorallocate($this -> image, 0x00, 0xFF, 0x00), "pastel green" => imagecolorallocate($this -> image, 0x00, 0xFF, 0x00), "forest green" => imagecolorallocate($this -> image, 0x80, 0x80, 0x00), "grass green" => imagecolorallocate($this -> image, 0x40, 0x80, 0x80), "pink" => imagecolorallocate($this -> image, 0xFF, 0x00, 0xFF)); 
+			$array_color = array("red" => imagecolorallocate($this -> image, 0xFF, 0x00, 0x00), "white" => imagecolorallocate($this -> image, 0xFF, 0xFF, 0xFF), "turquoise" => imagecolorallocate($this -> image, 0x00, 0xFF, 0xFF), "grey" => imagecolorallocate($this -> image, 0xC0, 0xC0, 0xC0), "light grey" => imagecolorallocate($this -> image, 0xC0, 0xC0, 0xC0), "dark grey" => imagecolorallocate($this -> image, 0x80, 0x80, 0x80), "blue" => imagecolorallocate($this -> image, 0x00, 0x00, 0xFF), "light blue" => imagecolorallocate($this -> image, 0x00, 0x00, 0xFF), "dark blue" => imagecolorallocate($this -> image, 0x00, 0x00, 0xA0), "black" => imagecolorallocate($this -> image, 0x00, 0x00, 0x00), "purple" => imagecolorallocate($this -> image, 0xFF, 0x00, 0x80), "light purple" => imagecolorallocate($this -> image, 0xFF, 0x00, 0x80), "dark purple" => imagecolorallocate($this -> image, 0x80, 0x00, 0x80), "orange" => imagecolorallocate($this -> image, 0xFF, 0x80, 0x40), "brown" => imagecolorallocate($this -> image, 0x80, 0x40, 0x00), "yellow" => imagecolorallocate($this -> image, 0xFF, 0xFF, 0x00), "burgundy" => imagecolorallocate($this -> image, 0x80, 0x00, 0x00), "green" => imagecolorallocate($this -> image, 0x00, 0xFF, 0x00), "pastel green" => imagecolorallocate($this -> image, 0x00, 0xFF, 0x00), "forest green" => imagecolorallocate($this -> image, 0x80, 0x80, 0x00), "grass green" => imagecolorallocate($this -> image, 0x40, 0x80, 0x80), "pink" => imagecolorallocate($this -> image, 0xFF, 0x00, 0xFF));
 			$color = $array_color[$color_code];
 		}
 		return $color;
